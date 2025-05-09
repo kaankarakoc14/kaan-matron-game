@@ -1,0 +1,17 @@
+{
+  "name": "factor-game",
+  "version": "1.0.0",
+  "description": "A web-based implementation of the Factor Game from NCTM",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "math",
+    "game",
+    "factors",
+    "education"
+  ],
+  "author": "",
+  "license": "MIT"
+} 
