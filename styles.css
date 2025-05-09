@@ -577,4 +577,32 @@ button:hover {
     to {
         transform: rotate(360deg);
     }
+}
+
+.language-selector {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.lang-btn {
+    padding: 8px 16px;
+    background-color: #2c3e50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.lang-btn:hover {
+    background-color: #34495e;
+    transform: translateY(-2px);
+}
+
+.lang-btn.active {
+    background-color: #3498db;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 } 

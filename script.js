@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let gameMode = 'human'; // Default game mode (human vs human)
     let aiDifficulty = 'easy'; // Default AI difficulty
     let aiThinking = false; // Flag to prevent interactions during AI turn
+    let currentLang = 'en'; // Default language
     
     // DOM elements
     const gameBoardElement = document.getElementById('game-board');
@@ -33,6 +34,101 @@ document.addEventListener('DOMContentLoaded', () => {
     const aiLevelRadios = document.querySelectorAll('input[name="ai-level"]');
     const aiThinkingElement = document.getElementById('ai-thinking');
     const containerElement = document.querySelector('.container');
+    const langButtons = document.querySelectorAll('.lang-btn');
+    
+    // Language switching functionality
+    function updateLanguage(lang) {
+        currentLang = lang;
+        const langData = languages[lang];
+        
+        // Update language buttons
+        langButtons.forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.lang === lang) {
+                btn.classList.add('active');
+            }
+        });
+        
+        // Update document title
+        document.title = langData.title;
+        
+        // Update main heading
+        document.querySelector('h1').textContent = langData.title;
+        
+        // Update game mode labels
+        document.querySelector('.option-group label').textContent = langData.gameMode;
+        document.querySelector('input[value="human"] + span').textContent = langData.twoPlayers;
+        document.querySelector('input[value="ai"] + span').textContent = langData.vsComputer;
+        
+        // Update AI difficulty labels
+        document.querySelector('.ai-difficulty label').textContent = langData.aiDifficulty;
+        document.querySelector('input[value="easy"] + span').textContent = langData.easy;
+        document.querySelector('input[value="medium"] + span').textContent = langData.medium;
+        document.querySelector('input[value="hard"] + span').textContent = langData.hard;
+        
+        // Update board size label
+        document.querySelector('.board-size-selector label').textContent = langData.boardSize;
+        
+        // Update player labels
+        document.querySelector('#player1 h2').textContent = langData.player1;
+        document.querySelector('#player2 h2').textContent = gameMode === 'ai' ? langData.computer : langData.player2;
+        
+        // Update score labels
+        document.querySelector('#player1 .score').textContent = `${langData.score}: `;
+        document.querySelector('#player2 .score').textContent = `${langData.score}: `;
+        
+        // Update last move labels
+        document.querySelector('#player1 .last-move').textContent = `${langData.lastMove}: `;
+        document.querySelector('#player2 .last-move').textContent = `${langData.lastMove}: `;
+        
+        // Update factors used labels
+        document.querySelector('#player1 .factors').textContent = `${langData.factorsUsed}: `;
+        document.querySelector('#player2 .factors').textContent = `${langData.factorsUsed}: `;
+        
+        // Update turn indicators
+        turn1Element.textContent = langData.yourTurn;
+        turn2Element.textContent = langData.waiting;
+        
+        // Update buttons
+        resetButton.textContent = langData.newGame;
+        instructionsButton.textContent = langData.instructions;
+        
+        // Update AI thinking text
+        aiThinkingElement.querySelector('span').textContent = langData.computerThinking;
+        
+        // Update message
+        updateMessage();
+    }
+    
+    // Add click event listeners to language buttons
+    langButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            updateLanguage(btn.dataset.lang);
+        });
+    });
+    
+    // Set initial language
+    updateLanguage(currentLang);
+    
+    // Update message based on current game state
+    function updateMessage() {
+        const langData = languages[currentLang];
+        if (gameOver) {
+            const player1Name = langData.player1;
+            const player2Name = gameMode === 'ai' ? langData.computer : langData.player2;
+            
+            if (scores[0] > scores[1]) {
+                messageElement.textContent = `${langData.gameOver} ${player1Name} ${langData.wins} ${scores[0]} ${langData.points}!`;
+            } else if (scores[1] > scores[0]) {
+                messageElement.textContent = `${langData.gameOver} ${player2Name} ${langData.wins} ${scores[1]} ${langData.points}!`;
+            } else {
+                messageElement.textContent = `${langData.gameOver} ${langData.tie} ${scores[0]} ${langData.pointsEach}!`;
+            }
+        } else {
+            const currentPlayerName = currentPlayer === 1 ? langData.player1 : (gameMode === 'ai' ? langData.computer : langData.player2);
+            messageElement.textContent = `${currentPlayerName}: ${langData.selectNumber}`;
+        }
+    }
     
     // Set default board size in dropdown
     boardSizeSelector.value = boardSize.toString();
@@ -329,6 +425,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function selectNumber(value) {
+        const langData = languages[currentLang];
         const number = gameBoard.find(n => n.value === value);
         
         // Check if the number has any unselected factors
@@ -337,7 +434,7 @@ document.addEventListener('DOMContentLoaded', () => {
         );
         
         if (unselectedFactors.length === 0) {
-            messageElement.textContent = `This number has no uncolored factors. Player ${currentPlayer} loses their turn.`;
+            messageElement.textContent = `${langData.noFactors} ${langData[currentPlayer === 1 ? 'player1' : 'player2']} ${langData.losesTurn}`;
             switchPlayer();
             return;
         }
@@ -389,10 +486,10 @@ document.addEventListener('DOMContentLoaded', () => {
         updateFactorsUsed();
         
         // Show a message about what happened
-        const currentPlayerName = currentPlayer === 1 ? 'Player 1' : (gameMode === 'ai' ? 'Computer' : 'Player 2');
-        const otherPlayerName = otherPlayer === 1 ? 'Player 1' : (gameMode === 'ai' ? 'Computer' : 'Player 2');
+        const currentPlayerName = currentPlayer === 1 ? langData.player1 : (gameMode === 'ai' ? langData.computer : langData.player2);
+        const otherPlayerName = otherPlayer === 1 ? langData.player1 : (gameMode === 'ai' ? langData.computer : langData.player2);
         
-        messageElement.textContent = `${currentPlayerName} selected ${value} (+${value} points). ${otherPlayerName} received all factors (+${factorSum} points).`;
+        messageElement.textContent = `${currentPlayerName} ${langData.selected} ${value} (+${value} ${langData.points}). ${otherPlayerName} ${langData.received} (+${factorSum} ${langData.pointsAdded}).`;
         
         // Check if the game is over
         if (isGameOver()) {
@@ -404,8 +501,8 @@ document.addEventListener('DOMContentLoaded', () => {
         switchPlayer();
         
         // Update message for next turn
-        const nextPlayerName = currentPlayer === 1 ? 'Player 1' : (gameMode === 'ai' ? 'Computer' : 'Player 2');
-        messageElement.textContent = `${nextPlayerName}: Select a number`;
+        const nextPlayerName = currentPlayer === 1 ? langData.player1 : (gameMode === 'ai' ? langData.computer : langData.player2);
+        messageElement.textContent = `${nextPlayerName}: ${langData.selectNumber}`;
     }
     
     function getProperFactors(number) {
@@ -469,15 +566,15 @@ document.addEventListener('DOMContentLoaded', () => {
     function endGame() {
         gameOver = true;
         
-        const player1Name = 'Player 1';
-        const player2Name = gameMode === 'ai' ? 'Computer' : 'Player 2';
+        const player1Name = langData.player1;
+        const player2Name = gameMode === 'ai' ? langData.computer : langData.player2;
         
         if (scores[0] > scores[1]) {
-            messageElement.textContent = `Game over! ${player1Name} wins with ${scores[0]} points!`;
+            messageElement.textContent = `${langData.gameOver} ${player1Name} ${langData.wins} ${scores[0]} ${langData.points}!`;
         } else if (scores[1] > scores[0]) {
-            messageElement.textContent = `Game over! ${player2Name} wins with ${scores[1]} points!`;
+            messageElement.textContent = `${langData.gameOver} ${player2Name} ${langData.wins} ${scores[1]} ${langData.points}!`;
         } else {
-            messageElement.textContent = `Game over! It's a tie with ${scores[0]} points each!`;
+            messageElement.textContent = `${langData.gameOver} ${langData.tie} ${scores[0]} ${langData.pointsEach}!`;
         }
     }
 }); 
