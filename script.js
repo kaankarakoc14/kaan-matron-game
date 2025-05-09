@@ -1,4 +1,150 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Language settings
+    let currentLanguage = 'en'; // Default language
+    
+    // Translation dictionaries
+    const translations = {
+        en: {
+            title: 'MATRON',
+            gameMode: 'Game Mode:',
+            twoPlayers: '2 Players',
+            vsComputer: 'vs Computer',
+            aiDifficulty: 'AI Difficulty:',
+            easy: 'Easy',
+            medium: 'Medium',
+            hard: 'Hard',
+            boardSize: 'Board Size:',
+            language: 'Language:',
+            player1: 'Player 1',
+            player2: 'Player 2',
+            computer: 'Computer',
+            score: 'Score:',
+            lastMove: 'Last Move:',
+            factorsUsed: 'Factors Used:',
+            yourTurn: 'Your Turn',
+            waiting: 'Waiting...',
+            playerSelectStart: 'Player 1: Select a number to start',
+            computerThinking: 'Computer is thinking...',
+            newGame: 'New Game',
+            instructions: 'Instructions',
+            howToPlay: 'How to Play',
+            selectedPoints: '{playerName} selected {value} (+{value} points)',
+            receivedFactors: '{playerName} received all factors (+{factorSum} points)',
+            playerSelectNumber: '{playerName}: Select a number',
+            gameOver: 'Game over! {playerName} wins with {score} points!',
+            tie: 'Game over! It\'s a tie with {score} points each!'
+        },
+        tr: {
+            title: 'MATRON',
+            gameMode: 'Oyun Modu:',
+            twoPlayers: '2 Oyuncu',
+            vsComputer: 'Bilgisayara Karşı',
+            aiDifficulty: 'Zorluk Seviyesi:',
+            easy: 'Kolay',
+            medium: 'Orta',
+            hard: 'Zor',
+            boardSize: 'Tahta Boyutu:',
+            language: 'Dil:',
+            player1: 'Oyuncu 1',
+            player2: 'Oyuncu 2',
+            computer: 'Bilgisayar',
+            score: 'Puan:',
+            lastMove: 'Son Hamle:',
+            factorsUsed: 'Kullanılan Çarpanlar:',
+            yourTurn: 'Sıra Sizde',
+            waiting: 'Bekliyor...',
+            playerSelectStart: 'Oyuncu 1: Başlamak için bir sayı seçin',
+            computerThinking: 'Bilgisayar düşünüyor...',
+            newGame: 'Yeni Oyun',
+            instructions: 'Talimatlar',
+            howToPlay: 'Nasıl Oynanır',
+            selectedPoints: '{playerName} {value} seçti (+{value} puan)',
+            receivedFactors: '{playerName} tüm çarpanları aldı (+{factorSum} puan)',
+            playerSelectNumber: '{playerName}: Bir sayı seçin',
+            gameOver: 'Oyun bitti! {playerName} {score} puanla kazandı!',
+            tie: 'Oyun bitti! {score} puanla berabere!'
+        }
+    };
+    
+    // Helper function for string formatting
+    function formatString(template, values) {
+        return Object.entries(values).reduce((result, [key, value]) => {
+            return result.replace(new RegExp(`{${key}}`, 'g'), value);
+        }, template);
+    }
+    
+    // Function to update UI text based on current language
+    function updateUILanguage() {
+        const t = translations[currentLanguage];
+        
+        // Update static UI elements
+        document.title = t.title;
+        document.querySelector('h1').textContent = t.title;
+        document.querySelector('.option-group:first-child label').textContent = t.gameMode;
+        document.querySelectorAll('.radio-group label span')[0].textContent = t.twoPlayers;
+        document.querySelectorAll('.radio-group label span')[1].textContent = t.vsComputer;
+        document.querySelector('.ai-difficulty label').textContent = t.aiDifficulty;
+        document.querySelectorAll('.ai-difficulty .radio-group label span')[0].textContent = t.easy;
+        document.querySelectorAll('.ai-difficulty .radio-group label span')[1].textContent = t.medium;
+        document.querySelectorAll('.ai-difficulty .radio-group label span')[2].textContent = t.hard;
+        document.querySelector('.board-size-selector label').textContent = t.boardSize;
+        document.querySelector('.language-selector label').textContent = t.language;
+        document.querySelector('#player1 h2').textContent = t.player1;
+        document.querySelector('#player2 h2').textContent = gameMode === 'ai' ? t.computer : t.player2;
+        document.querySelectorAll('.score')[0].childNodes[0].textContent = t.score + ' ';
+        document.querySelectorAll('.score')[1].childNodes[0].textContent = t.score + ' ';
+        document.querySelectorAll('.last-move')[0].childNodes[0].textContent = t.lastMove + ' ';
+        document.querySelectorAll('.last-move')[1].childNodes[0].textContent = t.lastMove + ' ';
+        document.querySelectorAll('.factors')[0].childNodes[0].textContent = t.factorsUsed + ' ';
+        document.querySelectorAll('.factors')[1].childNodes[0].textContent = t.factorsUsed + ' ';
+        document.querySelector('#turn1').textContent = t.yourTurn;
+        document.querySelector('#turn2').textContent = t.waiting;
+        document.querySelector('#reset-btn').textContent = t.newGame;
+        document.querySelector('#instructions-btn').textContent = t.instructions;
+        document.querySelector('.modal-content h2').textContent = t.howToPlay;
+        document.querySelector('#ai-thinking span').textContent = t.computerThinking;
+        
+        // Toggle instructions language display
+        document.querySelectorAll('[id^="instructions-"]').forEach(el => {
+            el.style.display = 'none';
+        });
+        document.querySelector(`#instructions-${currentLanguage}`).style.display = 'block';
+        
+        // Update dynamic message based on game state
+        updateGameMessage();
+    }
+    
+    // Update game message based on current state
+    function updateGameMessage() {
+        const t = translations[currentLanguage];
+        
+        if (gameOver) {
+            const player1Name = t.player1;
+            const player2Name = gameMode === 'ai' ? t.computer : t.player2;
+            
+            if (scores[0] > scores[1]) {
+                messageElement.textContent = formatString(t.gameOver, {
+                    playerName: player1Name,
+                    score: scores[0]
+                });
+            } else if (scores[1] > scores[0]) {
+                messageElement.textContent = formatString(t.gameOver, {
+                    playerName: player2Name,
+                    score: scores[1]
+                });
+            } else {
+                messageElement.textContent = formatString(t.tie, {
+                    score: scores[0]
+                });
+            }
+        } else {
+            const nextPlayerName = currentPlayer === 1 ? t.player1 : (gameMode === 'ai' ? t.computer : t.player2);
+            messageElement.textContent = formatString(t.playerSelectNumber, {
+                playerName: nextPlayerName
+            });
+        }
+    }
+    
     // Game settings
     let boardSize = 6; // Default board size (6x6)
     let maxNumber = boardSize * boardSize;
@@ -11,7 +157,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let gameMode = 'human'; // Default game mode (human vs human)
     let aiDifficulty = 'easy'; // Default AI difficulty
     let aiThinking = false; // Flag to prevent interactions during AI turn
-    let currentLang = 'en'; // Default language
     
     // DOM elements
     const gameBoardElement = document.getElementById('game-board');
@@ -34,101 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const aiLevelRadios = document.querySelectorAll('input[name="ai-level"]');
     const aiThinkingElement = document.getElementById('ai-thinking');
     const containerElement = document.querySelector('.container');
-    const langButtons = document.querySelectorAll('.lang-btn');
-    
-    // Language switching functionality
-    function updateLanguage(lang) {
-        currentLang = lang;
-        const langData = languages[lang];
-        
-        // Update language buttons
-        langButtons.forEach(btn => {
-            btn.classList.remove('active');
-            if (btn.dataset.lang === lang) {
-                btn.classList.add('active');
-            }
-        });
-        
-        // Update document title
-        document.title = langData.title;
-        
-        // Update main heading
-        document.querySelector('h1').textContent = langData.title;
-        
-        // Update game mode labels
-        document.querySelector('.option-group label').textContent = langData.gameMode;
-        document.querySelector('input[value="human"] + span').textContent = langData.twoPlayers;
-        document.querySelector('input[value="ai"] + span').textContent = langData.vsComputer;
-        
-        // Update AI difficulty labels
-        document.querySelector('.ai-difficulty label').textContent = langData.aiDifficulty;
-        document.querySelector('input[value="easy"] + span').textContent = langData.easy;
-        document.querySelector('input[value="medium"] + span').textContent = langData.medium;
-        document.querySelector('input[value="hard"] + span').textContent = langData.hard;
-        
-        // Update board size label
-        document.querySelector('.board-size-selector label').textContent = langData.boardSize;
-        
-        // Update player labels
-        document.querySelector('#player1 h2').textContent = langData.player1;
-        document.querySelector('#player2 h2').textContent = gameMode === 'ai' ? langData.computer : langData.player2;
-        
-        // Update score labels
-        document.querySelector('#player1 .score').textContent = `${langData.score}: `;
-        document.querySelector('#player2 .score').textContent = `${langData.score}: `;
-        
-        // Update last move labels
-        document.querySelector('#player1 .last-move').textContent = `${langData.lastMove}: `;
-        document.querySelector('#player2 .last-move').textContent = `${langData.lastMove}: `;
-        
-        // Update factors used labels
-        document.querySelector('#player1 .factors').textContent = `${langData.factorsUsed}: `;
-        document.querySelector('#player2 .factors').textContent = `${langData.factorsUsed}: `;
-        
-        // Update turn indicators
-        turn1Element.textContent = langData.yourTurn;
-        turn2Element.textContent = langData.waiting;
-        
-        // Update buttons
-        resetButton.textContent = langData.newGame;
-        instructionsButton.textContent = langData.instructions;
-        
-        // Update AI thinking text
-        aiThinkingElement.querySelector('span').textContent = langData.computerThinking;
-        
-        // Update message
-        updateMessage();
-    }
-    
-    // Add click event listeners to language buttons
-    langButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            updateLanguage(btn.dataset.lang);
-        });
-    });
-    
-    // Set initial language
-    updateLanguage(currentLang);
-    
-    // Update message based on current game state
-    function updateMessage() {
-        const langData = languages[currentLang];
-        if (gameOver) {
-            const player1Name = langData.player1;
-            const player2Name = gameMode === 'ai' ? langData.computer : langData.player2;
-            
-            if (scores[0] > scores[1]) {
-                messageElement.textContent = `${langData.gameOver} ${player1Name} ${langData.wins} ${scores[0]} ${langData.points}!`;
-            } else if (scores[1] > scores[0]) {
-                messageElement.textContent = `${langData.gameOver} ${player2Name} ${langData.wins} ${scores[1]} ${langData.points}!`;
-            } else {
-                messageElement.textContent = `${langData.gameOver} ${langData.tie} ${scores[0]} ${langData.pointsEach}!`;
-            }
-        } else {
-            const currentPlayerName = currentPlayer === 1 ? langData.player1 : (gameMode === 'ai' ? langData.computer : langData.player2);
-            messageElement.textContent = `${currentPlayerName}: ${langData.selectNumber}`;
-        }
-    }
+    const languageSelector = document.getElementById('language');
     
     // Set default board size in dropdown
     boardSizeSelector.value = boardSize.toString();
@@ -147,8 +198,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Set the AI difficulty radio button
         document.querySelector(`input[name="ai-level"][value="${aiDifficulty}"]`).checked = true;
         
-        // Update player 2 label
-        document.querySelector('#player2 h2').textContent = gameMode === 'ai' ? 'Computer' : 'Player 2';
+        // Update language texts
+        updateUILanguage();
     }
     
     // Initial UI setup
@@ -156,6 +207,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Event listeners
     resetButton.addEventListener('click', initGame);
+    
+    // Language selection
+    languageSelector.addEventListener('change', function() {
+        currentLanguage = this.value;
+        updateUILanguage();
+    });
+    
     boardSizeSelector.addEventListener('change', function() {
         boardSize = parseInt(this.value);
         maxNumber = boardSize * boardSize;
@@ -252,10 +310,11 @@ document.addEventListener('DOMContentLoaded', () => {
         createGameBoardUI();
         
         // Set initial message
-        messageElement.textContent = 'Player 1: Select a number to start';
+        const t = translations[currentLanguage];
+        messageElement.textContent = t.playerSelectStart;
         
-        // Update player labels
-        document.querySelector('#player2 h2').textContent = gameMode === 'ai' ? 'Computer' : 'Player 2';
+        // Update all UI text with current language
+        updateUILanguage();
     }
     
     function createGameBoardUI() {
@@ -425,43 +484,39 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function selectNumber(value) {
-        const langData = languages[currentLang];
+        // Find the number in the game board
         const number = gameBoard.find(n => n.value === value);
         
-        // Check if the number has any unselected factors
-        const unselectedFactors = getProperFactors(value).filter(factor => 
-            !gameBoard.find(n => n.value === factor).selected
-        );
+        // Get the proper factors of the selected number
+        const factors = getProperFactors(value);
         
-        if (unselectedFactors.length === 0) {
-            messageElement.textContent = `${langData.noFactors} ${langData[currentPlayer === 1 ? 'player1' : 'player2']} ${langData.losesTurn}`;
-            switchPlayer();
-            return;
-        }
+        // Filter out already selected factors
+        const unselectedFactors = factors.filter(factor => {
+            return !gameBoard.find(n => n.value === factor).selected;
+        });
         
-        // Mark the number as selected
+        // Mark the selected number as selected
         number.selected = true;
         number.owner = currentPlayer;
         
-        // Add points to the current player
-        scores[currentPlayer - 1] += value;
-        
-        // Update last move for current player
-        lastMoves[currentPlayer - 1] = value;
-        
-        // Update UI for the selected number
+        // Update the UI
         const numberElement = gameBoardElement.querySelector(`[data-value="${value}"]`);
         numberElement.classList.add(`player${currentPlayer}`);
         numberElement.classList.add('disabled');
         
+        // Add the value to the current player's score
+        scores[currentPlayer - 1] += value;
+        
+        // Record the move
+        lastMoves[currentPlayer - 1] = value.toString();
+        
         // Get the other player
         const otherPlayer = getOtherPlayer();
         
-        // Clear factors used for the other player from previous round
-        factorsUsed[otherPlayer - 1] = [];
-        
-        // Now automatically select all proper factors for the other player
+        // Calculate the sum of unselected factors
         let factorSum = 0;
+        
+        // Mark all unselected factors as belonging to the other player
         unselectedFactors.forEach(factor => {
             const factorNumber = gameBoard.find(n => n.value === factor);
             factorNumber.selected = true;
@@ -486,10 +541,21 @@ document.addEventListener('DOMContentLoaded', () => {
         updateFactorsUsed();
         
         // Show a message about what happened
-        const currentPlayerName = currentPlayer === 1 ? langData.player1 : (gameMode === 'ai' ? langData.computer : langData.player2);
-        const otherPlayerName = otherPlayer === 1 ? langData.player1 : (gameMode === 'ai' ? langData.computer : langData.player2);
+        const t = translations[currentLanguage];
+        const currentPlayerName = currentPlayer === 1 ? t.player1 : (gameMode === 'ai' ? t.computer : t.player2);
+        const otherPlayerName = otherPlayer === 1 ? t.player1 : (gameMode === 'ai' ? t.computer : t.player2);
         
-        messageElement.textContent = `${currentPlayerName} ${langData.selected} ${value} (+${value} ${langData.points}). ${otherPlayerName} ${langData.received} (+${factorSum} ${langData.pointsAdded}).`;
+        const selectedMessage = formatString(t.selectedPoints, {
+            playerName: currentPlayerName,
+            value: value
+        });
+        
+        const factorsMessage = formatString(t.receivedFactors, {
+            playerName: otherPlayerName,
+            factorSum: factorSum
+        });
+        
+        messageElement.textContent = `${selectedMessage}. ${factorsMessage}.`;
         
         // Check if the game is over
         if (isGameOver()) {
@@ -501,8 +567,7 @@ document.addEventListener('DOMContentLoaded', () => {
         switchPlayer();
         
         // Update message for next turn
-        const nextPlayerName = currentPlayer === 1 ? langData.player1 : (gameMode === 'ai' ? langData.computer : langData.player2);
-        messageElement.textContent = `${nextPlayerName}: ${langData.selectNumber}`;
+        updateGameMessage();
     }
     
     function getProperFactors(number) {
@@ -565,16 +630,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function endGame() {
         gameOver = true;
-        
-        const player1Name = langData.player1;
-        const player2Name = gameMode === 'ai' ? langData.computer : langData.player2;
-        
-        if (scores[0] > scores[1]) {
-            messageElement.textContent = `${langData.gameOver} ${player1Name} ${langData.wins} ${scores[0]} ${langData.points}!`;
-        } else if (scores[1] > scores[0]) {
-            messageElement.textContent = `${langData.gameOver} ${player2Name} ${langData.wins} ${scores[1]} ${langData.points}!`;
-        } else {
-            messageElement.textContent = `${langData.gameOver} ${langData.tie} ${scores[0]} ${langData.pointsEach}!`;
-        }
+        updateGameMessage();
     }
 }); 
