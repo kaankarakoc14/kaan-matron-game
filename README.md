@@ -1,6 +1,6 @@
-# Factor Game
+# MATRON
 
-A web-based implementation of the Factor Game, based on the interactive game from the National Council of Teachers of Mathematics (NCTM).
+A web-based implementation of MATRON.
 
 ## How to Play
 

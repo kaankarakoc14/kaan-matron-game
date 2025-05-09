@@ -1,7 +1,7 @@
 {
-  "name": "factor-game",
+  "name": "matron",
   "version": "1.0.0",
-  "description": "A web-based implementation of the Factor Game from NCTM",
+  "description": "A web-based implementation of MATRON",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
