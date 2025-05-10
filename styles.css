@@ -23,8 +23,9 @@ body {
 }
 
 .school-logo {
-    max-width: 250px;
+    max-width: 100%;
     height: auto;
+    margin-bottom: 10px;
 }
 
 /* Adjust container padding for larger boards */
