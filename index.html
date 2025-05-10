@@ -10,7 +10,7 @@
 <body>
     <div class="container">
         <div class="logo-container">
-            <img src="https://ayseabla.k12.tr/wp-content/uploads/2019/07/banner-logo.jpg" alt="Ayşeabla Okulları Logo" class="school-logo">
+            <img src="https://ayseabla.k12.tr/wp-content/uploads/2019/08/logo-1.png" alt="Başkent Üniversitesi Özel Ayşeabla Okulları Logo" class="school-logo">
         </div>
         <h1>MATRON</h1>
         
@@ -48,27 +48,25 @@
             </div>
         </div>
         
-        <div class="selectors-container">
-            <div class="board-size-selector">
-                <label for="board-size">Board Size:</label>
-                <select id="board-size">
-                    <option value="4">4 x 4 (16)</option>
-                    <option value="5">5 x 5 (25)</option>
-                    <option value="6">6 x 6 (36)</option>
-                    <option value="7">7 x 7 (49)</option>
-                    <option value="8">8 x 8 (64)</option>
-                    <option value="9">9 x 9 (81)</option>
-                    <option value="10">10 x 10 (100)</option>
-                </select>
-            </div>
-            
-            <div class="language-selector">
-                <label for="language">Language:</label>
-                <select id="language">
-                    <option value="en">English</option>
-                    <option value="tr">Türkçe</option>
-                </select>
-            </div>
+        <div class="board-size-selector">
+            <label for="board-size">Board Size:</label>
+            <select id="board-size">
+                <option value="4">4 x 4 (16)</option>
+                <option value="5">5 x 5 (25)</option>
+                <option value="6">6 x 6 (36)</option>
+                <option value="7">7 x 7 (49)</option>
+                <option value="8">8 x 8 (64)</option>
+                <option value="9">9 x 9 (81)</option>
+                <option value="10">10 x 10 (100)</option>
+            </select>
+        </div>
+        
+        <div class="language-selector">
+            <label for="language">Language:</label>
+            <select id="language">
+                <option value="en">English</option>
+                <option value="tr">Türkçe</option>
+            </select>
         </div>
         
         <div class="score-board">
@@ -111,12 +109,20 @@
                 
                 <div id="instructions-en">
                     <ol>
-                        <li>Player 1 chooses a number on the game board and receives that many points.</li>
-                        <li>Player 2 (or Computer) automatically gets all the proper factors of that number (all factors except the number itself) and receives the sum of those factors as points.</li>
-                        <li>Players then reverse roles. Player 2 (or Computer) chooses a number and gets points, then Player 1 gets all the proper factors and their points.</li>
-                        <li>If a player chooses a number with no uncolored factors remaining, that player loses their turn and gets no points.</li>
-                        <li>The game ends when there are no numbers remaining with uncolored factors.</li>
-                        <li>The player with the higher score wins.</li>
+                        <li>Players take turns. The game starts with Player 1.</li>
+                        <li>On your turn, select a number from the board.</li>
+                        <li>The number you select is added to your score.</li>
+                        <li>All unselected factors of that number are given to the other player and added to their score.</li>
+                        <li>Both the selected number and its factors are removed from the board.</li>
+                        <li>If you select a number that has no remaining factors on the board:
+                            <ul>
+                                <li>You score no points</li>
+                                <li>You lose your turn</li>
+                                <li>The number stays on the board</li>
+                            </ul>
+                        </li>
+                        <li>The game ends when no number on the board can form a factor relationship with any other number, or when there are no numbers left.</li>
+                        <li>The player with the highest score wins.</li>
                     </ol>
                     <p><strong>Example:</strong> If Player 1 selects 12, they get 12 points. Player 2 then automatically gets the proper factors of 12 (1, 2, 3, 4, and 6) and receives 16 points (1+2+3+4+6).</p>
                     
@@ -132,12 +138,20 @@
                 
                 <div id="instructions-tr" style="display: none;">
                     <ol>
-                        <li>Oyuncu 1 tahta üzerinde bir sayı seçer ve o kadar puan alır.</li>
-                        <li>Oyuncu 2 (veya Bilgisayar) otomatik olarak o sayının tüm çarpanlarını (kendisi hariç) alır ve bu çarpanların toplamı kadar puan kazanır.</li>
-                        <li>Oyuncular sonra rol değiştirir. Oyuncu 2 (veya Bilgisayar) bir sayı seçer ve puan alır, ardından Oyuncu 1 tüm çarpanları ve bunların puanlarını alır.</li>
-                        <li>Eğer bir oyuncu boyanmamış çarpanı kalmayan bir sayı seçerse, o oyuncu sırasını kaybeder ve puan alamaz.</li>
-                        <li>Boyanmamış çarpanı kalan sayı kalmadığında oyun sona erer.</li>
-                        <li>Daha yüksek puana sahip oyuncu kazanır.</li>
+                        <li>Oyuncular sırayla oynar. Oyun Oyuncu 1 ile başlar.</li>
+                        <li>Sıranız geldiğinde, tahtadan bir sayı seçin.</li>
+                        <li>Seçtiğiniz sayı puanınıza eklenir.</li>
+                        <li>O sayının seçilmemiş tüm çarpanları diğer oyuncuya verilir ve puanlarına eklenir.</li>
+                        <li>Hem seçilen sayı hem de çarpanları tahtadan kaldırılır.</li>
+                        <li>Eğer tahtada kalan çarpanı olmayan bir sayı seçerseniz:
+                            <ul>
+                                <li>Puan alamazsınız</li>
+                                <li>Sıranızı kaybedersiniz</li>
+                                <li>Sayı tahtada kalır</li>
+                            </ul>
+                        </li>
+                        <li>Tahtadaki hiçbir sayı başka bir sayıyla çarpan ilişkisi kuramaması veya tahtada hiç sayı kalmaması durumunda oyun sona erer.</li>
+                        <li>En yüksek puana sahip oyuncu kazanır.</li>
                     </ol>
                     <p><strong>Örnek:</strong> Eğer Oyuncu 1, 12 sayısını seçerse, 12 puan alır. Oyuncu 2 sonra otomatik olarak 12'nin çarpanlarını (1, 2, 3, 4 ve 6) alır ve 16 puan (1+2+3+4+6) kazanır.</p>
                     

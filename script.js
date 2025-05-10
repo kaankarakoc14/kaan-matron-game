@@ -32,7 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
             receivedFactors: '{playerName} received all factors (+{factorSum} points)',
             playerSelectNumber: '{playerName}: Select a number',
             gameOver: 'Game over! {playerName} wins with {score} points!',
-            tie: 'Game over! It\'s a tie with {score} points each!'
+            tie: 'Game over! It\'s a tie with {score} points each!',
+            lostTurn: '{playerName} selected {value} but there are no remaining factors. Turn is lost.'
         },
         tr: {
             title: 'MATRON',
@@ -62,7 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
             receivedFactors: '{playerName} tüm çarpanları aldı (+{factorSum} puan)',
             playerSelectNumber: '{playerName}: Bir sayı seçin',
             gameOver: 'Oyun bitti! {playerName} {score} puanla kazandı!',
-            tie: 'Oyun bitti! {score} puanla berabere!'
+            tie: 'Oyun bitti! {score} puanla berabere!',
+            lostTurn: '{playerName} {value} seçti fakat kalan çarpan yok. Sıra kaybedildi.'
         }
     };
     
@@ -387,6 +389,23 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (selectedValue) {
             selectNumber(selectedValue);
+        } else {
+            // No valid moves for AI, check if game is over
+            if (isGameOver()) {
+                endGame();
+            } else {
+                // Skip AI's turn and return to player
+                const t = translations[currentLanguage];
+                messageElement.textContent = formatString(t.lostTurn, {
+                    playerName: t.computer,
+                    value: '-'
+                });
+                
+                // Switch back to player 1
+                currentPlayer = 1;
+                updateTurnIndicator();
+                updateGameMessage();
+            }
         }
     }
     
@@ -418,9 +437,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const factorSum = factors.reduce((sum, factor) => sum + factor, 0);
                 // Calculate a score based on points minus factor sum (higher is better for AI)
                 const score = n.value - factorSum;
-                return { value: n.value, score, factorSum };
+                return { value: n.value, score, factorSum, factorCount: factors.length };
             })
-            .filter(n => n.factorSum > 0); // Must have at least one unselected factor
+            .filter(n => n.factorCount > 0); // Must have at least one unselected factor
         
         if (availableNumbers.length === 0) return null;
         
@@ -471,10 +490,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 return { 
                     value: n.value, 
                     score: strategicScore,
-                    factorSum
+                    factorSum,
+                    factorCount: factors.length
                 };
             })
-            .filter(n => n.factorSum > 0); // Must have at least one unselected factor
+            .filter(n => n.factorCount > 0); // Must have at least one unselected factor
         
         if (availableNumbers.length === 0) return null;
         
@@ -495,6 +515,27 @@ document.addEventListener('DOMContentLoaded', () => {
             return !gameBoard.find(n => n.value === factor).selected;
         });
         
+        const t = translations[currentLanguage];
+        const currentPlayerName = currentPlayer === 1 ? t.player1 : (gameMode === 'ai' ? t.computer : t.player2);
+        const otherPlayer = getOtherPlayer();
+        const otherPlayerName = otherPlayer === 1 ? t.player1 : (gameMode === 'ai' ? t.computer : t.player2);
+        
+        // Check if there are no unselected factors
+        if (unselectedFactors.length === 0) {
+            // Player loses their turn and gets no points
+            messageElement.textContent = formatString(t.lostTurn, {
+                playerName: currentPlayerName,
+                value: value
+            });
+            
+            // Switch player without updating scores or marking the number as selected
+            switchPlayer();
+            
+            // Update message for next turn
+            updateGameMessage();
+            return;
+        }
+        
         // Mark the selected number as selected
         number.selected = true;
         number.owner = currentPlayer;
@@ -509,9 +550,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Record the move
         lastMoves[currentPlayer - 1] = value.toString();
-        
-        // Get the other player
-        const otherPlayer = getOtherPlayer();
         
         // Calculate the sum of unselected factors
         let factorSum = 0;
@@ -541,10 +579,6 @@ document.addEventListener('DOMContentLoaded', () => {
         updateFactorsUsed();
         
         // Show a message about what happened
-        const t = translations[currentLanguage];
-        const currentPlayerName = currentPlayer === 1 ? t.player1 : (gameMode === 'ai' ? t.computer : t.player2);
-        const otherPlayerName = otherPlayer === 1 ? t.player1 : (gameMode === 'ai' ? t.computer : t.player2);
-        
         const selectedMessage = formatString(t.selectedPoints, {
             playerName: currentPlayerName,
             value: value
@@ -610,21 +644,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function isGameOver() {
-        // Check if there are any numbers left with unselected factors
-        for (let i = 1; i <= maxNumber; i++) {
-            const number = gameBoard.find(n => n.value === i);
-            
+        // Check if there are any valid moves left
+        // A valid move is an unselected number that has at least one unselected factor
+        
+        // Check if all numbers are selected
+        const allSelected = gameBoard.every(n => n.selected);
+        if (allSelected) {
+            return true;
+        }
+        
+        // Check if there are any unselected numbers with unselected factors
+        for (const number of gameBoard) {
             if (!number.selected) {
-                const hasUnselectedFactors = getProperFactors(i).some(factor => 
+                const factors = getProperFactors(number.value);
+                const hasUnselectedFactor = factors.some(factor => 
                     !gameBoard.find(n => n.value === factor).selected
                 );
                 
-                if (hasUnselectedFactors) {
+                if (hasUnselectedFactor) {
+                    // There's at least one valid move left
                     return false;
                 }
             }
         }
         
+        // No valid moves left, game is over
         return true;
     }
     
