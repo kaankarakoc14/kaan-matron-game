@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
             playerSelectNumber: '{playerName}: Select a number',
             gameOver: 'Game over! {playerName} wins with {score} points!',
             tie: 'Game over! It\'s a tie with {score} points each!',
-            lostTurn: '{playerName} selected {value} but there are no remaining factors. Turn is lost.'
+            lostTurn: 'Number {value} has no remaining factors on the board. {playerName} loses their turn. Next turn: {nextPlayerName}'
         },
         tr: {
             title: 'MATRON',
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
             playerSelectNumber: '{playerName}: Bir sayı seçin',
             gameOver: 'Oyun bitti! {playerName} {score} puanla kazandı!',
             tie: 'Oyun bitti! {score} puanla berabere!',
-            lostTurn: '{playerName} {value} seçti fakat kalan çarpan yok. Sıra kaybedildi.'
+            lostTurn: '{value} sayısının tabloda kalan çarpanı kalmadı. {playerName} sırasını kaybetti. Sıradaki oyuncu: {nextPlayerName}'
         }
     };
     
@@ -398,13 +398,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 const t = translations[currentLanguage];
                 messageElement.textContent = formatString(t.lostTurn, {
                     playerName: t.computer,
-                    value: '-'
+                    value: '-',
+                    nextPlayerName: t.player1
                 });
                 
                 // Switch back to player 1
                 currentPlayer = 1;
                 updateTurnIndicator();
-                updateGameMessage();
+                
+                // Don't update message as we've already created a custom message
             }
         }
     }
@@ -523,16 +525,20 @@ document.addEventListener('DOMContentLoaded', () => {
         // Check if there are no unselected factors
         if (unselectedFactors.length === 0) {
             // Player loses their turn and gets no points
+            // Get the next player name
+            const nextPlayer = getOtherPlayer();
+            const nextPlayerName = nextPlayer === 1 ? t.player1 : (gameMode === 'ai' ? t.computer : t.player2);
+            
             messageElement.textContent = formatString(t.lostTurn, {
                 playerName: currentPlayerName,
-                value: value
+                value: value,
+                nextPlayerName: nextPlayerName
             });
             
             // Switch player without updating scores or marking the number as selected
             switchPlayer();
             
-            // Update message for next turn
-            updateGameMessage();
+            // Don't update message for next turn as we've already created a custom message
             return;
         }
         
