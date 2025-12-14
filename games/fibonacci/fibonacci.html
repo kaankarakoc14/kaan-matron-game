@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fibonacci Dizisi - Matematik Oyunları</title>
+    <link rel="stylesheet" href="fibonacci.css">
+    <link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../../index.html" class="back-button">← Ana Menüye Dön</a>
+            <h1>🌀 Fibonacci Dizisi ve Doğadaki Görünümleri</h1>
+        </div>
+
+        <div class="content">
+            <div class="info-section">
+                <h2>Fibonacci Dizisi Nedir?</h2>
+                <p>Fibonacci dizisi, her sayının önceki iki sayının toplamı olduğu bir sayı dizisidir:</p>
+                <p class="formula">0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144...</p>
+                <p>Bu dizi doğada birçok yerde görülür: ayçiçeği tohumları, salyangoz kabukları, ağaç dalları ve daha fazlası!</p>
+            </div>
+
+            <div class="calculator-section">
+                <h2>Fibonacci Hesaplayıcı</h2>
+                <div class="input-group">
+                    <label for="term-count">Kaç terim görmek istersin?</label>
+                    <input type="number" id="term-count" min="1" max="50" value="10">
+                    <button id="calculate-btn">Hesapla</button>
+                </div>
+                <div id="fibonacci-result" class="result-box"></div>
+            </div>
+
+            <div class="visualization-section">
+                <h2>Fibonacci Spiral Görselleştirmesi</h2>
+                <canvas id="spiral-canvas" width="600" height="600"></canvas>
+                <div class="controls">
+                    <button id="draw-spiral-btn">Spiral Çiz</button>
+                    <button id="clear-canvas-btn">Temizle</button>
+                </div>
+            </div>
+
+            <div class="golden-ratio-section">
+                <h2>Altın Oran (Golden Ratio)</h2>
+                <p>Fibonacci dizisinde, bir sayının bir önceki sayıya oranı altın orana (φ ≈ 1.618) yaklaşır!</p>
+                <div id="golden-ratio-result" class="result-box"></div>
+            </div>
+
+            <div class="nature-examples">
+                <h2>Doğadaki Örnekler</h2>
+                <div class="examples-grid">
+                    <div class="example-card">
+                        <div class="example-icon">🌻</div>
+                        <h3>Ayçiçeği</h3>
+                        <p>Ayçiçeği tohumları Fibonacci spiral deseninde dizilir.</p>
+                    </div>
+                    <div class="example-card">
+                        <div class="example-icon">🐚</div>
+                        <h3>Salyangoz Kabuğu</h3>
+                        <p>Salyangoz kabukları Fibonacci spiralini takip eder.</p>
+                    </div>
+                    <div class="example-card">
+                        <div class="example-icon">🌲</div>
+                        <h3>Ağaç Dalları</h3>
+                        <p>Ağaç dalları Fibonacci sayılarına göre büyür.</p>
+                    </div>
+                    <div class="example-card">
+                        <div class="example-icon">🌺</div>
+                        <h3>Çiçek Yaprakları</h3>
+                        <p>Birçok çiçekte yaprak sayısı Fibonacci sayılarıdır.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="fibonacci.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geometrik Şekiller - Matematik Oyunları</title>
+    <link rel="stylesheet" href="geometry.css">
+    <link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../../index.html" class="back-button">← Ana Menüye Dön</a>
+            <h1>📐 Geometrik Şekiller ve Alan Hesaplama</h1>
+        </div>
+
+        <div class="content">
+            <div class="shape-selector">
+                <h2>Şekil Seç</h2>
+                <div class="button-group">
+                    <button class="shape-btn active" data-shape="square">Kare</button>
+                    <button class="shape-btn" data-shape="rectangle">Dikdörtgen</button>
+                    <button class="shape-btn" data-shape="triangle">Üçgen</button>
+                    <button class="shape-btn" data-shape="circle">Daire</button>
+                </div>
+            </div>
+
+            <div class="calculator-section">
+                <div class="shape-info" id="shape-info"></div>
+                <div class="inputs" id="inputs"></div>
+                <button id="calculate-btn">Alan Hesapla</button>
+                <div class="result" id="result"></div>
+            </div>
+
+            <div class="canvas-section">
+                <canvas id="shape-canvas" width="400" height="400"></canvas>
+            </div>
+
+            <div class="quiz-section">
+                <h2>Alan Hesaplama Oyunu</h2>
+                <div class="quiz-question" id="quiz-question"></div>
+                <div class="quiz-options" id="quiz-options"></div>
+                <div class="quiz-result" id="quiz-result"></div>
+                <button id="next-question-btn">Sonraki Soru</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="geometry.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asal Sayı Avcısı - Matematik Oyunları</title>
+    <link rel="stylesheet" href="primes.css">
+    <link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../../index.html" class="back-button">← Ana Menüye Dön</a>
+            <h1>🔍 Asal Sayı Avcısı</h1>
+        </div>
+
+        <div class="content">
+            <div class="info-section">
+                <h2>Asal Sayı Nedir?</h2>
+                <p>Asal sayılar, sadece 1 ve kendisine bölünebilen sayılardır. Örnek: 2, 3, 5, 7, 11, 13, 17, 19...</p>
+            </div>
+
+            <div class="tools-section">
+                <div class="tool-card">
+                    <h3>Asal Sayı Testi</h3>
+                    <div class="input-group">
+                        <input type="number" id="test-number" min="2" placeholder="Sayı girin">
+                        <button id="test-btn">Test Et</button>
+                    </div>
+                    <div class="test-result" id="test-result"></div>
+                </div>
+
+                <div class="tool-card">
+                    <h3>Eratosthenes Kalburu</h3>
+                    <div class="input-group">
+                        <label>Maksimum sayı:</label>
+                        <input type="number" id="sieve-max" min="2" max="200" value="100">
+                        <button id="sieve-btn">Göster</button>
+                    </div>
+                    <div class="sieve-result" id="sieve-result"></div>
+                </div>
+            </div>
+
+            <div class="game-section">
+                <h2>Asal Sayı Bulma Oyunu</h2>
+                <div class="game-info">
+                    <p>Verilen sayılar arasından asal sayıları bul!</p>
+                    <p>Skor: <span id="score">0</span> | Süre: <span id="timer">60</span> saniye</p>
+                </div>
+                <div class="game-numbers" id="game-numbers"></div>
+                <div class="game-result" id="game-result"></div>
+                <button id="start-game-btn">Oyunu Başlat</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="primes.js"></script>
+</body>
+</html>
+
