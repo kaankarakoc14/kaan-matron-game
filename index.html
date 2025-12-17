@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matematik Oyunları - TÜBİTAK 2204-B</title>
-    <link rel="stylesheet" href="main-menu.css">
+    <title>MATRON</title>
+    <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
 </head>
 <body>
@@ -12,90 +12,162 @@
         <div class="logo-container">
             <img src="https://ayseabla.k12.tr/wp-content/uploads/2019/07/banner-logo.jpg" alt="Başkent Üniversitesi Özel Ayşeabla Okulları Logo" class="school-logo">
         </div>
+        <h1>MATRON</h1>
         
-        <header>
-            <h1>🎮 Matematik Oyunları Koleksiyonu</h1>
-            <p class="subtitle">TÜBİTAK 2204-B Ortaokul Öğrencileri Araştırma Projeleri Yarışması</p>
-        </header>
-
-        <div class="games-grid">
-            <!-- MATRON Oyunu -->
-            <div class="game-card">
-                <div class="game-icon">🔢</div>
-                <h2>MATRON</h2>
-                <p class="game-description">Çarpanlar üzerine kurulu strateji oyunu. Sayıların çarpanlarını kullanarak rakibini yen!</p>
-                <a href="games/matron/matron.html" class="play-button">Oyna</a>
+        <div class="game-options">
+            <div class="option-group">
+                <label>Game Mode:</label>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="game-mode" value="human" checked>
+                        <span>2 Players</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="game-mode" value="ai">
+                        <span>vs Computer</span>
+                    </label>
+                </div>
             </div>
             
-            <!-- Fibonacci Dizisi -->
-            <div class="game-card">
-                <div class="game-icon">🌀</div>
-                <h2>Fibonacci Dizisi</h2>
-                <p class="game-description">Fibonacci sayılarını keşfet ve doğadaki görünümlerini incele. Altın oranı öğren!</p>
-                <a href="games/fibonacci/fibonacci.html" class="play-button">Oyna</a>
-            </div>
-
-            <!-- Fraktallar -->
-            <div class="game-card">
-                <div class="game-icon">❄️</div>
-                <h2>Fraktallar</h2>
-                <p class="game-description">Sonsuz desenler oluştur! Sierpinski Üçgeni ve Koch Kar Tanesi fraktallarını keşfet.</p>
-                <a href="games/fractals/fractals.html" class="play-button">Oyna</a>
-        </div>
-        
-            <!-- Olasılık ve İstatistik -->
-            <div class="game-card">
-                <div class="game-icon">🎲</div>
-                <h2>Olasılık Simülatörü</h2>
-                <p class="game-description">Zar, para atma ve kart çekme simülatörleri ile olasılığı öğren ve grafiklerle görselleştir!</p>
-                <a href="games/probability/probability.html" class="play-button">Oyna</a>
-        </div>
-        
-            <!-- Geometrik Şekiller -->
-            <div class="game-card">
-                <div class="game-icon">📐</div>
-                <h2>Geometrik Şekiller</h2>
-                <p class="game-description">Geometrik şekilleri öğren, alan hesaplamalarını yap ve oyunlaştırılmış soruları çöz!</p>
-                <a href="games/geometry/geometry.html" class="play-button">Oyna</a>
-        </div>
-        
-            <!-- Sayı Dizileri -->
-            <div class="game-card">
-                <div class="game-icon">🔢</div>
-                <h2>Sayı Dizileri</h2>
-                <p class="game-description">Aritmetik, geometrik ve özel sayı dizilerini keşfet. Desenleri bul ve analiz et!</p>
-                <a href="games/sequences/sequences.html" class="play-button">Oyna</a>
-            </div>
-
-            <!-- Grafik ve Veri Görselleştirme -->
-            <div class="game-card">
-                <div class="game-icon">📊</div>
-                <h2>Veri Görselleştirme</h2>
-                <p class="game-description">Kendi verilerini gir ve çizgi, sütun, pasta grafikleri oluştur. Verilerini analiz et!</p>
-                <a href="games/charts/charts.html" class="play-button">Oyna</a>
-        </div>
-        
-            <!-- Tessellation -->
-            <div class="game-card">
-                <div class="game-icon">🎨</div>
-                <h2>Tessellation Oluşturucu</h2>
-                <p class="game-description">Matematik ve sanatı birleştir! Mozaik desenleri oluştur ve renklendir.</p>
-                <a href="games/tessellation/tessellation.html" class="play-button">Oyna</a>
-        </div>
-        
-            <!-- Asal Sayı Avcısı -->
-            <div class="game-card">
-                <div class="game-icon">🔍</div>
-                <h2>Asal Sayı Avcısı</h2>
-                <p class="game-description">Asal sayıları bul ve öğren! Eratosthenes Kalburu ile asal sayıları keşfet.</p>
-                <a href="games/primes/primes.html" class="play-button">Oyna</a>
+            <div class="option-group ai-difficulty" style="display: none;">
+                <label>AI Difficulty:</label>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="ai-level" value="easy" checked>
+                        <span>Easy</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="ai-level" value="medium">
+                        <span>Medium</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="ai-level" value="hard">
+                        <span>Hard</span>
+                    </label>
+                </div>
             </div>
         </div>
-
-        <footer>
-            <p>© 2025 TÜBİTAK 2204-B Matematik Projesi</p>
-            <p>Başkent Üniversitesi Özel Ayşeabla Okulları</p>
-        </footer>
+        
+        <div class="board-size-selector">
+            <label for="board-size">Board Size:</label>
+            <select id="board-size">
+                <option value="4">4 x 4 (16)</option>
+                <option value="5">5 x 5 (25)</option>
+                <option value="6">6 x 6 (36)</option>
+                <option value="7">7 x 7 (49)</option>
+                <option value="8">8 x 8 (64)</option>
+                <option value="9">9 x 9 (81)</option>
+                <option value="10">10 x 10 (100)</option>
+            </select>
+        </div>
+        
+        <div class="language-selector">
+            <label for="language">Language:</label>
+            <select id="language">
+                <option value="en">English</option>
+                <option value="tr">Türkçe</option>
+            </select>
+        </div>
+        
+        <div class="score-board">
+            <div class="player" id="player1">
+                <h2>Player 1</h2>
+                <p class="score">Score: <span id="score1">0</span></p>
+                <p class="last-move">Last Move: <span id="lastMove1">-</span></p>
+                <p class="factors">Factors Used: <span id="factors1">-</span></p>
+                <div class="current-turn" id="turn1">Your Turn</div>
+            </div>
+            <div class="player" id="player2">
+                <h2>Player 2</h2>
+                <p class="score">Score: <span id="score2">0</span></p>
+                <p class="last-move">Last Move: <span id="lastMove2">-</span></p>
+                <p class="factors">Factors Used: <span id="factors2">-</span></p>
+                <div class="current-turn" id="turn2">Waiting...</div>
+            </div>
+        </div>
+        
+        <div class="message" id="message">Player 1: Select a number to start</div>
+        
+        <div class="ai-thinking" id="ai-thinking">
+            <div class="spinner"></div>
+            <span>Computer is thinking...</span>
+        </div>
+        
+        <div class="game-board" id="game-board">
+            <!-- Game board will be generated by JavaScript -->
+        </div>
+        
+        <div class="controls">
+            <button id="reset-btn">New Game</button>
+            <button id="instructions-btn">Instructions</button>
+        </div>
+        
+        <div class="modal" id="instructions-modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2>How to Play</h2>
+                
+                <div id="instructions-en">
+                    <ol>
+                        <li>Players take turns. The game starts with Player 1.</li>
+                        <li>On your turn, select a number from the board.</li>
+                        <li>The number you select is added to your score.</li>
+                        <li>All unselected factors of that number are given to the other player and added to their score.</li>
+                        <li>Both the selected number and its factors are removed from the board.</li>
+                        <li>If you select a number that has no remaining factors on the board:
+                            <ul>
+                                <li>You score no points</li>
+                                <li>You lose your turn</li>
+                                <li>The number stays on the board</li>
+                            </ul>
+                        </li>
+                        <li>The game ends when no number on the board can form a factor relationship with any other number, or when there are no numbers left.</li>
+                        <li>The player with the highest score wins.</li>
+                    </ol>
+                    <p><strong>Example:</strong> If Player 1 selects 12, they get 12 points. Player 2 then automatically gets the proper factors of 12 (1, 2, 3, 4, and 6) and receives 16 points (1+2+3+4+6).</p>
+                    
+                    <h3>Game Modes</h3>
+                    <p><strong>2 Players:</strong> Two human players take turns playing the game.</p>
+                    <p><strong>vs Computer:</strong> Play against the AI with three difficulty levels:</p>
+                    <ul>
+                        <li><strong>Easy:</strong> The computer makes random valid moves.</li>
+                        <li><strong>Medium:</strong> The computer chooses better moves based on a points ratio.</li>
+                        <li><strong>Hard:</strong> The computer uses advanced strategies and considers future moves.</li>
+                    </ul>
+                </div>
+                
+                <div id="instructions-tr" style="display: none;">
+                    <ol>
+                        <li>Oyuncular sırayla oynar. Oyun Oyuncu 1 ile başlar.</li>
+                        <li>Sıranız geldiğinde, tahtadan bir sayı seçin.</li>
+                        <li>Seçtiğiniz sayı puanınıza eklenir.</li>
+                        <li>O sayının seçilmemiş tüm çarpanları diğer oyuncuya verilir ve puanlarına eklenir.</li>
+                        <li>Hem seçilen sayı hem de çarpanları tahtadan kaldırılır.</li>
+                        <li>Eğer tahtada kalan çarpanı olmayan bir sayı seçerseniz:
+                            <ul>
+                                <li>Puan alamazsınız</li>
+                                <li>Sıranızı kaybedersiniz</li>
+                                <li>Sayı tahtada kalır</li>
+                            </ul>
+                        </li>
+                        <li>Tahtadaki hiçbir sayı başka bir sayıyla çarpan ilişkisi kuramaması veya tahtada hiç sayı kalmaması durumunda oyun sona erer.</li>
+                        <li>En yüksek puana sahip oyuncu kazanır.</li>
+                    </ol>
+                    <p><strong>Örnek:</strong> Eğer Oyuncu 1, 12 sayısını seçerse, 12 puan alır. Oyuncu 2 sonra otomatik olarak 12'nin çarpanlarını (1, 2, 3, 4 ve 6) alır ve 16 puan (1+2+3+4+6) kazanır.</p>
+                    
+                    <h3>Oyun Modları</h3>
+                    <p><strong>2 Oyuncu:</strong> İki insan oyuncu sırayla oyunu oynar.</p>
+                    <p><strong>Bilgisayara Karşı:</strong> Üç zorluk seviyesinde yapay zekâya karşı oynayın:</p>
+                    <ul>
+                        <li><strong>Kolay:</strong> Bilgisayar rastgele geçerli hamleler yapar.</li>
+                        <li><strong>Orta:</strong> Bilgisayar puan oranına dayalı daha iyi hamleler seçer.</li>
+                        <li><strong>Zor:</strong> Bilgisayar gelişmiş stratejiler kullanır ve gelecek hamleleri düşünür.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
+    
+    <script src="script.js"></script>
 </body>
 </html> 
